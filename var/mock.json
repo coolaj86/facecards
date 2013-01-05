@@ -1,0 +1,22 @@
+[
+    {
+        "name": "AJ ONeal"
+      , "gender": "male"
+      , "thumbnail": "/images/coolaj86-2012-square-med.jpg"
+    }
+  , {
+        "name": "Brian Dittman"
+      , "gender": "male"
+      , "thumbnail": "/images/dittman.jpg"
+    }
+  , {
+        "name": "Sam Dodini"
+      , "gender": "male"
+      , "thumbnail": "/images/DSCN1525.JPG"
+    }
+  , {
+        "name": "Hanna ONeal"
+      , "gender": "female"
+      , "thumbnail": "/images/033.JPG"
+    }
+]

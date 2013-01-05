@@ -1,0 +1,43 @@
+!!! 5
+html
+  head
+    title FaceCards
+    meta(http-equiv="X-UA-Compatible", content="IE=Edge,chrome=1")
+    //if IE
+      script
+        alert(
+            'Your version of Internet Explorer is out-of-date and or buggy.'
+          + ' Please use Chrome, Firefox, or ChromeFrame to run this application.'
+        );
+    meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+    meta(charset="utf-8")
+    link(rel="stylesheet", href="style.css", type="text/css", media="screen")
+    link(rel="stylesheet", href="style.css", type="text/css", media="print")
+    script(src="pakmanaged.js")
+
+  body
+    #css-body-wrapper
+      h1.
+        What is this person's name?
+
+      #js-card-container(style="height: 300px; width: 300px; border: solid blue 1px;")
+        .js-thumbnail(style="position: relative; float: left; border: 1px dotted black; width: 200px; height: 200px; overflow: hidden; display: inline-block;")
+          img(style="left: 50%; margin-left: -50%;", align="absmiddle", src="images/anonymous.png")
+        span.js-name(style="visibility: hidden;") First Last
+        span.js-name-hints(style="visibility: hidden;") First Last
+        button.js-hint Get Hint
+
+      form#js-search
+        span.
+          Search:
+        input#js-search-input(type="text")
+
+      #js-results-container
+        ul#js-results.css-results
+          li.js-result-item
+            span.js-name First Last
+
+      #js-updrop
+        form
+          input(type='file', multiple='multiple')
+          input(type='submit')
