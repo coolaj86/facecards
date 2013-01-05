@@ -192,7 +192,6 @@
 
     // 
     currentCard = cards.pop();
-
     loadCard(currentCard);
   }
 
@@ -310,15 +309,14 @@
 
         ajasMutex = false;
 
-        if (!data || !data.length) {
-          return;
-        }
+        cards = data;
 
-        cache = JSON.parse(JSON.stringify(data.result));
+        cache = JSON.parse(JSON.stringify(cards));
         cache.sort(function (a, b) {
           return a.name > b.name;
         });
-        cards = JSON.parse(JSON.stringify(data.result));
+
+        cards = JSON.parse(JSON.stringify(cards));
         cards = cards.sort(function () {
           return (Math.round(Math.random()) - 0.5);
         }).filter(function (c) {
@@ -326,23 +324,21 @@
             return true;
           }
         });
+
+        cb();
       });
     }
+
     getDeck(function () {
       nextCard();
       searchAgain();
-
-      if (searchWaiting) {
-        searchWaiting = false;
-        searchAgainNow();
-      }
     });
   }
 
   domReady(function () {
     request.get('/bookmarklet.min.js').when(function (err, ahr, data) {
-      data = data.replace(/LOCATION_HOST/g, location.host);
-      $('#js-bookmarklet').attr('href', 'javascript:' + data);
+      data = 'javascript:' + data.replace(/LOCATION_HOST/g, location.host);
+      $('#js-bookmarklet').attr('href', data);
     });
   });
   domReady(init);

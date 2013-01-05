@@ -17,7 +17,32 @@ html
 
   body
     #css-body-wrapper
-      #js-instructions
+      .css-cards
+        h1.
+          What is this person's name?
+        #js-card-container(style="height: 300px; width: 300px; border: solid blue 1px;")
+          .js-thumbnail(style="position: relative; float: left; border: 1px dotted black; width: 200px; height: 200px; overflow: hidden; display: inline-block;")
+            img(style="left: 50%; margin-left: -50%;", align="absmiddle", src="images/anonymous.png")
+          span.js-name(style="visibility: hidden;") First Last
+          span.js-name-hints(style="visibility: hidden;") First Last
+          button.js-hint Get Hint
+
+        form#js-search
+          span.
+            Search:
+          input#js-search-input(type="text")
+
+        #js-results-container
+          ul#js-results.css-results
+            li.js-result-item
+              span.js-name First Last
+
+        //- #js-updrop
+          form
+            input(type='file', multiple='multiple')
+            input(type='submit')
+
+      #js-instructions.css-instructions
         h3 Upload Instructions
         a#js-bookmarklet(href="javascript:alert('bookmarklet did not load properly. try again')") Scrape LDS.org
         ol
@@ -40,29 +65,3 @@ html
             ]
 
             Supply either thumbnail or imageData, not both.
-
-      h1.
-        What is this person's name?
-
-      #js-card-container(style="height: 300px; width: 300px; border: solid blue 1px;")
-        .js-thumbnail(style="position: relative; float: left; border: 1px dotted black; width: 200px; height: 200px; overflow: hidden; display: inline-block;")
-          img(style="left: 50%; margin-left: -50%;", align="absmiddle", src="images/anonymous.png")
-        span.js-name(style="visibility: hidden;") First Last
-        span.js-name-hints(style="visibility: hidden;") First Last
-        button.js-hint Get Hint
-
-      form#js-search
-        span.
-          Search:
-        input#js-search-input(type="text")
-
-      #js-results-container
-        ul#js-results.css-results
-          li.js-result-item
-            span.js-name First Last
-
-      //- #js-updrop
-        form
-          input(type='file', multiple='multiple')
-          input(type='submit')
-
