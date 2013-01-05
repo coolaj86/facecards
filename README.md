@@ -1,6 +1,8 @@
 facecards
 ===
 
+Live Demo at <http://facecards.demos.coolaj86.com>
+
   0. Install NodeJS <http://nodejs.org>
 
   1. Install facecards
