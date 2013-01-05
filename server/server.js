@@ -13,14 +13,11 @@
     , _ = require('underscore')
     , forEachAsync = require('forEachAsync')
     , app = connect.createServer()
-    , mockData
     , dNow = new Date()
     ;
 
-  mockData = require(path.join('..', 'var', 'mock.json'));
-
   function doQuery(cb, search) {
-    cb(mockData);
+    // TODO
   }
 
   function getMeta(req, res) {
