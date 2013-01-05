@@ -17,6 +17,30 @@ html
 
   body
     #css-body-wrapper
+      #js-instructions
+        h3 Upload Instructions
+        a#js-bookmarklet(href="javascript:alert('bookmarklet did not load properly. try again')") Scrape LDS.org
+        ol
+          li Drag this bookmarklet to your bookmark bar
+          li Login to LDS.org
+          li Click on the bookmarklet
+          li You will be redirected back to this site upon completion
+        div.
+          OR
+        pre
+          code.
+            POST /decks/:deckId
+
+            [
+                {
+                    "name": "Some Name"
+                  , "thumbnail": "http://i.imgur.com/HDuzB.jpg"
+                  , "imageData": "data:image/jpeg;base64,/9j/4AAQSkZJ..."
+                }
+            ]
+
+            Supply either thumbnail or imageData, not both.
+
       h1.
         What is this person's name?
 
@@ -37,7 +61,8 @@ html
           li.js-result-item
             span.js-name First Last
 
-      #js-updrop
+      //- #js-updrop
         form
           input(type='file', multiple='multiple')
           input(type='submit')
+

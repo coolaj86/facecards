@@ -7,6 +7,7 @@
 
   var $ = require('ender')
     , _ = require('underscore')
+    , location = require('location')
     , domReady = require('domready')
     , pure = require('pure').$p
     , request = require('ahr2')
@@ -56,31 +57,6 @@
     console.log('search results:', result);
   }
 
-  function searchDeck(cb, search) {
-    if (cache) {
-      searchDeckCache(cb, search);
-      return;
-    }
-
-    // TODO use cb
-    request.get("/meta").when(function (err, ahr, data) {
-    //request.get("/meta?search=" + encodeURIComponent(search)).when(function (err, ahr, data) {
-      ajasMutex = false;
-
-      if (!data || !data.success) {
-        console.error(data && data.errors || "unsuccessful ajas");
-      } else {
-        cache = data.result;
-        searchDeck(cb, search);
-      }
-
-      if (searchWaiting) {
-        searchWaiting = false;
-        searchAgainNow();
-      }
-    });
-  }
-
   function searchAgainNow() {
     var input = $('#js-search-input').val().replace(/\s+/g, ' ').replace(/\s$/, '')
       ;
@@ -109,7 +85,7 @@
 
     // TODO show current query to user
     console.log(input, typeof input);
-    searchDeck(doRender, input);
+    searchDeckCache(doRender, input);
   }
 
   function doRender(object) {
@@ -186,7 +162,11 @@
     $('#js-search-input').val('');
     $('#js-card-container .js-name-hints').text('');
     $('#js-card-container .js-name').text(card.name);
-    img = sizeImage(card.thumbnail);
+    if (card.imageData) {
+      img = sizeImage(card.imageData);
+    } else {
+      img = sizeImage(card.thumbnail);
+    }
   }
 
   function ensureHint() {
@@ -311,24 +291,59 @@
       request.post('/upload', null, f);
     });
 
-    request.get("/meta").when(function (err, ahr, data) {
-      if (err || !data || !data.success || !data.result || !data.result.length) {
-        global.alert('Sometimes bad things happen to good people. This is one of those times.');
-        return;
+    //request.get("/meta").when(function (err, ahr, data)
+    function getDeck(cb, search) {
+      if (!location.hash.substr(1)) {
+        location.hash = '#mock.json';
       }
 
-      cache = JSON.parse(JSON.stringify(data.result));
-      cache.sort(function (a, b) {
-        return a.name > b.name;
+      request.get("/decks/" + location.hash.substr(1)).when(function (err, ahr, data) {
+      //request.get("/meta?search=" + encodeURIComponent(search)).when(function (err, ahr, data)
+        if (err || !Array.isArray(data)) {
+          console.error(data && data.errors || data || "unsuccessful ajas");
+          alert("Sometimes bad things happen to good people... This is one of those times. :'(");
+          alert("Couldn't find a card deck by that name");
+          location.hash = '';
+          getDeck(cb, search);
+          return;
+        }
+
+        ajasMutex = false;
+
+        if (!data || !data.length) {
+          return;
+        }
+
+        cache = JSON.parse(JSON.stringify(data.result));
+        cache.sort(function (a, b) {
+          return a.name > b.name;
+        });
+        cards = JSON.parse(JSON.stringify(data.result));
+        cards = cards.sort(function () {
+          return (Math.round(Math.random()) - 0.5);
+        }).filter(function (c) {
+          if (c.imageData || c.thumbnail) {
+            return true;
+          }
+        });
       });
-      cards = JSON.parse(JSON.stringify(data.result));
-      cards.sort(function () {
-        return (Math.round(Math.random()) - 0.5);
-      });
+    }
+    getDeck(function () {
       nextCard();
       searchAgain();
+
+      if (searchWaiting) {
+        searchWaiting = false;
+        searchAgainNow();
+      }
     });
   }
 
+  domReady(function () {
+    request.get('/bookmarklet.min.js').when(function (err, ahr, data) {
+      data = data.replace(/LOCATION_HOST/g, location.host);
+      $('#js-bookmarklet').attr('href', 'javascript:' + data);
+    });
+  });
   domReady(init);
 }());
